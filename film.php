@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TD mediatheque</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <p>
@@ -18,17 +19,21 @@
             <input type="text" name="time" id="time">
             <label for="synopsis">Synopsis : </label>
             <input type="text" name="synopsis" id="synopsis">
-            <button>Créer</button>
+            <button>Créer une fiche film</button>
         </form>
+    </p>
+
+    <!-- Afficher l’intégralité des films -->
+    <p>
         <?php
-         if(isset($_POST["nom"])&& isset($_POST["prenom"])){
-            $nom = $_POST["nom"];
-            $prenom = $_POST["prenom"];
-            $requestInsert = $bdd->prepare("INSERT INTO user(prenom,nom)
-                                        VALUES (?,?)");
-            $data = $requestInsert->execute (array($prenom,$nom));
+        $bdd = new PDO ("mysql:host=localhost;dbname=mediatheque;charset=utf8","root","");
+        $requestRead = $bdd->prepare ("SELECT titre, realisateur, genre, duree FROM film");
+        $requestRead->execute(array());
+            while ($data = $requestRead -> fetch()){
+                echo "<p>" . $data["titre"] . "  " . $data["realisateur"] . $data["genre"] . $data["duree"] . "</p>";
             }
         ?>
+        
     </p>
 </body>
 </html>
