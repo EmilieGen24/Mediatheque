@@ -17,8 +17,8 @@ input {
 }
 button {
     padding: 10px;
-    border: 2px solid;
-    color: #bd6d6d;
+    border: 2px solid black;
+    color: black;
     font-weight: 600;
     border-radius: 5px;
     width: 50%;
