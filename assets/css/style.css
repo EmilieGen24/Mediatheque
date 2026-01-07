@@ -87,3 +87,8 @@ button {
     background-color: bisque;
 }
 
+.card {
+    border: 2px solid black;
+    display: flex;
+}
+

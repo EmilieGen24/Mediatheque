@@ -29,14 +29,21 @@
 
     <!-- Afficher les 3 derniers films sur page accueil et retirer les utilisateurs -->
     <?php
-    $requestRead = $bdd->prepare ("SELECT titre, realisateur, genre, duree FROM film LIMIT 3");
-    $requestRead->execute(array());
+        $requestRead = $bdd->prepare ("SELECT titre, realisateur, genre, duree FROM film LIMIT 3");
+        $requestRead->execute(array());
             while ($data = $requestRead -> fetch()){
-                echo  $data["titre"] . " <br> " . "Réalisé par : " . $data["realisateur"] . " <br> " . $data["genre"] . " <br> " . $data["duree"] . " min" . " <br> ";
-            }
-            
+                echo  '<div class="card">
+                <div class="card-content">
+                "<h3>".$data["titre"]"</h3>"
+                "<p>"Réalisé par : . $data["realisateur"]"</p>"
+                "<p>"Genre : . $data["genre"]"</p>"
+                <p>Durée : . $data["duree"] min "</p>"
+                <a href="film.php?id=$data["id"]>Voir plus</a>
+                </div>
+                // </div>';
+            }    
     ?>
-    <a href="film.php">Voir plus</a>
+    
 </section> 
 <section>
      <!-- Inserer un boutton qui amène sur une autre page -->
