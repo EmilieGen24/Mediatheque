@@ -50,11 +50,21 @@ nav a {
     color: black;
 }
 
-a{
+.modif{
+    display: block;
+    color: green;
     text-decoration: none;
     text-transform: uppercase;
     font-weight: 600;
-    color: black;
+    margin: 0 auto;
+}
+
+.synopsis {
+    display: block;
+    color: brown;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
 input {

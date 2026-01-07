@@ -1,3 +1,16 @@
+<?php
+    $bdd = new PDO ("mysql:host=localhost;dbname=mediatheque;charset=utf8","root","");
+
+    // afficher sur la page d’accueil les 2 noms et prénoms
+    $requestRead = $bdd->query ("   SELECT prenom, nom 
+                                    FROM user");
+        while ($data = $requestRead -> fetch()){
+        }
+    $requestReadLimit = $bdd->prepare ("    SELECT id, titre, realisateur, genre, duree 
+                                            FROM film LIMIT 3");
+    $requestReadLimit->execute([]);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,35 +26,23 @@
 
 <section>  
     <h1> LES FILMS A L'AFFICHE</h1>
-    
-    <p>
-        <?php
-        $bdd = new PDO ("mysql:host=localhost;dbname=mediatheque;charset=utf8","root","");
-
-    // afficher sur la page d’accueil les 2 noms et prénoms
-        $requestRead = $bdd->query ("SELECT prenom, nom FROM user");
-            while ($data = $requestRead -> fetch()){
-                // afficher les noms et prénoms
-                // echo "<p>" . $data["prenom"] . "  " . $data["nom"] . "</p>";
-            }
-        ?>
-    </p>
 
     <!-- Afficher les 3 derniers films sur page accueil et retirer les utilisateurs -->
     <?php
-        $requestRead = $bdd->prepare ("SELECT titre, realisateur, genre, duree FROM film LIMIT 3");
-        $requestRead->execute(array());
-            while ($data = $requestRead -> fetch()){
-                echo  '<div class="card">
+        
+        while ($data = $requestReadLimit -> fetch()):
+    ?>
+            <div class="card">
                 <div class="card-content">
-                "<h3>".$data["titre"]"</h3>"
-                "<p>"Réalisé par : . $data["realisateur"]"</p>"
-                "<p>"Genre : . $data["genre"]"</p>"
-                <p>Durée : . $data["duree"] min "</p>"
-                <a href="film.php?id=$data["id"]>Voir plus</a>
+                <h3><?=$data["titre"]?></h3>
+                <p>Réalisé par : <?=$data["realisateur"] ?></p>
+                <p>Genre : <?=$data["genre"] ?></p>
+                <p>Durée : <?=$data["duree"] . " min" ?></p>
+                <a href="synopsis.php?id=<?=$data["id"] ?>">Voir plus</a>
                 </div>
-                // </div>';
-            }    
+            </div>
+    <?php            
+            endwhile;  
     ?>
     
 </section> 
@@ -49,12 +50,6 @@
      <!-- Inserer un boutton qui amène sur une autre page -->
     <button><a href="film.php">Ajouter une fiche de film</a></button>
 </section>
-   
-
-    
-
-    
-   
     
 </body>
 </html>

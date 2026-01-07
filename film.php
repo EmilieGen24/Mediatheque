@@ -1,3 +1,11 @@
+<?php
+    $bdd = new PDO ("mysql:host=localhost;dbname=mediatheque;charset=utf8","root","");
+    $requestRead = $bdd->prepare (" SELECT id, titre, realisateur, genre, duree 
+                                    FROM film");
+    $requestRead->execute([]);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,8 +36,7 @@
         </form>
     </p>
     <?php
-        $bdd = new PDO ("mysql:host=localhost;dbname=mediatheque;charset=utf8","root","");
-
+        
         if(isset($_POST["titre"], $_POST["real"], $_POST["genre"], $_POST["time"], $_POST["synopsis"])) {
             $titre = $_POST["titre"];
             $real = $_POST["real"];
@@ -37,8 +44,8 @@
             $time = $_POST["time"];
             $synopsis = $_POST["synopsis"];
 
-            $requestInsert = $bdd->prepare("INSERT INTO film(titre, realisateur, genre, duree, synopsis)
-                                        VALUES (?,?,?,?,?)");
+            $requestInsert = $bdd->prepare("    INSERT INTO film(titre, realisateur, genre, duree, synopsis)
+                                                VALUES (?,?,?,?,?)");
             $data = $requestInsert->execute (array($titre,$real,$genre,$time,$synopsis));
         }
     ?>
@@ -75,16 +82,25 @@
 
     <h2>NOS FICHES FILMS</h2>
     <!-- Afficher l’intégralité des films -->
-    <p>
-        <?php
-       
-        $requestRead = $bdd->prepare ("SELECT titre, realisateur, genre, duree FROM film");
-        $requestRead->execute(array());
-            while ($data = $requestRead -> fetch()){
-                echo "<p>" . $data["titre"] . "  " . $data["realisateur"] . $data["genre"] . $data["duree"] . "</p>";
-            }
-        ?>
-        
-    </p>
+    
+    <?php
+        while ($data = $requestRead -> fetch()):
+    ?>
+            <div class="card">
+                <div class="card-content">
+                <h3><?=$data["titre"]?></h3>
+                <p>Réalisé par : <?=$data["realisateur"] ?></p>
+                <p>Genre : <?=$data["genre"] ?></p>
+                <p>Durée : <?=$data["duree"] . " min" ?></p>
+                <a class="synopsis" href="synopsis.php?id=<?=$data["id"] ?>">Voir plus</a>
+                <a class="modif" href="update.php?id=<?=$data["id"] ?>">modifier</a>
+                <a class="delete" href="delete.php?id=<?=$data["id"] ?>">supprimer</a>
+                </div>
+            </div>
+    <?php            
+            endwhile;  
+    ?>
+
+    
 </body>
 </html>
